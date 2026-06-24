@@ -1,62 +1,31 @@
-package com.cognizant.search;
-
-import java.util.Arrays;
-import java.util.Comparator;
+package com.cognizant.forecast;
 
 public class Main {
 
-    // Linear Search
-    public static Product linearSearch(Product[] products, int id) {
+    // Recursive method
+    public static double futureValue(double currentValue,
+                                     double growthRate,
+                                     int years) {
 
-        for (Product p : products) {
-            if (p.productId == id) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    // Binary Search
-    public static Product binarySearch(Product[] products, int id) {
-
-        int left = 0;
-        int right = products.length - 1;
-
-        while (left <= right) {
-
-            int mid = (left + right) / 2;
-
-            if (products[mid].productId == id)
-                return products[mid];
-
-            if (products[mid].productId < id)
-                left = mid + 1;
-            else
-                right = mid - 1;
+        if (years == 0) {
+            return currentValue;
         }
 
-        return null;
+        return futureValue(
+                currentValue * (1 + growthRate),
+                growthRate,
+                years - 1);
     }
 
     public static void main(String[] args) {
 
-        Product[] products = {
-                new Product(101, "Laptop", "Electronics"),
-                new Product(102, "Phone", "Electronics"),
-                new Product(103, "Shoes", "Fashion"),
-                new Product(104, "Watch", "Accessories")
-        };
+        double currentValue = 10000;
+        double growthRate = 0.10; // 10%
+        int years = 5;
 
-        Product result1 = linearSearch(products, 103);
+        double result =
+                futureValue(currentValue, growthRate, years);
 
-        if (result1 != null)
-            System.out.println("Linear Search Found: " + result1.productName);
-
-        Arrays.sort(products, Comparator.comparingInt(p -> p.productId));
-
-        Product result2 = binarySearch(products, 104);
-
-        if (result2 != null)
-            System.out.println("Binary Search Found: " + result2.productName);
+        System.out.println("Future Value: " + result);
     }
 }
